@@ -16,7 +16,7 @@ trait CachesApiResponses
                 $response = $this->http->get($url);
 
                 try {
-                    return json_decode($response->getBody()->getContents(), false, 512, JSON_THROW_ON_ERROR);
+                    return json_decode($response->getBody()->getContents(), false);
                 } catch (JsonException $e) {
                     Log::error("JSON decode failed for URL {$url}: " . $e->getMessage());
                     throw new \RuntimeException("Failed to decode API response.");

@@ -21,12 +21,12 @@ class LookupController extends Controller
             $params = $request->only(['username', 'id']);
 
             return $this->lookupService->lookup($type, $params);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'The `type` parameter is required, and either `username` or `id` must be provided.',
+                'code' => 400,
+            ], 400);
         }
-
-        return response()->json([
-            'success' => false,
-            'message' => 'The `type` parameter is required, and either `username` or `id` must be provided.',
-            'code' => 400,
-        ], 400);
     }
 }

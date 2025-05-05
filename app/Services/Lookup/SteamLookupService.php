@@ -27,7 +27,7 @@ class SteamLookupService implements LookupInterface
         $id = $params['id'] ?? null;
 
         if (!$id) {
-            throw new \InvalidArgumentException("Steam lookup requires an ID.");
+            throw new \InvalidArgumentException("Steam only supports IDs.");
         }
 
         $cacheKey = "steam_lookup_id_{$id}";
