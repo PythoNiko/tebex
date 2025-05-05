@@ -3,10 +3,13 @@
 namespace App\Services\Lookup;
 
 use App\Contracts\LookupInterface;
+use App\Traits\CachesApiResponses;
 use GuzzleHttp\Client;
 
 class MinecraftLookupService implements LookupInterface
 {
+    use CachesApiResponses;
+
     protected Client $http;
 
     public function __construct(Client $http)
@@ -21,15 +24,24 @@ class MinecraftLookupService implements LookupInterface
 
     public function lookup(array $params): array
     {
-        if (!empty($params['username'])) {
-            $response = $this->http->get("https://api.mojang.com/users/profiles/minecraft/{$params['username']}");
-        } elseif (!empty($params['id'])) {
-            $response = $this->http->get("https://sessionserver.mojang.com/session/minecraft/profile/{$params['id']}");
+        $username = $params['username'] ?? null;
+        $id = $params['id'] ?? null;
+
+        if ($username) {
+            $cacheKey = "minecraft_lookup_username_{$username}";
+            $url = "https://api.mojang.com/users/profiles/minecraft/{$username}";
+        } elseif ($id) {
+            $cacheKey = "minecraft_lookup_id_{$id}";
+            $url = "https://sessionserver.mojang.com/session/minecraft/profile/{$id}";
         } else {
             throw new \InvalidArgumentException("Username or ID is required for Minecraft lookup.");
         }
 
-        $data = json_decode($response->getBody()->getContents());
+        $data = $this->fetchJsonWithCache($cacheKey, $url);
+
+        if (!isset($data->id, $data->name)) {
+            throw new \UnexpectedValueException("Missing expected fields in API response.");
+        }
 
         return [
             'username' => $data->name,
@@ -38,5 +50,3 @@ class MinecraftLookupService implements LookupInterface
         ];
     }
 }
-
-

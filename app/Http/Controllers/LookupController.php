@@ -1,15 +1,10 @@
-<?php declare(strict_types=1);
+<?php
 
 namespace App\Http\Controllers;
 
 use App\Services\LookupService;
 use Illuminate\Http\Request;
 
-/**
- * Class LookupController
- *
- * @package App\Http\Controllers
- */
 class LookupController extends Controller
 {
     protected LookupService $lookupService;
@@ -21,9 +16,17 @@ class LookupController extends Controller
 
     public function lookup(Request $request)
     {
-        $type = $request->get('type');
-        $params = $request->only(['username', 'id']);
+        if (filled($request->get('type')) && ($request->filled('username') || $request->filled('id'))) {
+            $type = $request->get('type');
+            $params = $request->only(['username', 'id']);
 
-        return $this->lookupService->lookup($type, $params);
+            return $this->lookupService->lookup($type, $params);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => 'The `type` parameter is required, and either `username` or `id` must be provided.',
+            'code' => 400,
+        ], 400);
     }
 }

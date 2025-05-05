@@ -22,4 +22,3 @@ class LookupService
         throw new \RuntimeException("No lookup platform found for type: {$type}");
     }
 }
-
