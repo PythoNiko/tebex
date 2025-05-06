@@ -22,6 +22,9 @@ class XblLookupService implements LookupInterface
         return $type === 'xbl';
     }
 
+    /**
+     * XBL API expects either Username or ID
+     */
     public function lookup(array $params): array
     {
         $username = $params['username'] ?? null;

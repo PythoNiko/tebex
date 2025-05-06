@@ -22,6 +22,9 @@ class MinecraftLookupService implements LookupInterface
         return $type === 'minecraft';
     }
 
+    /**
+     * Minecraft API expects either Username or ID
+     */
     public function lookup(array $params): array
     {
         $username = $params['username'] ?? null;

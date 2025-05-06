@@ -22,6 +22,9 @@ class SteamLookupService implements LookupInterface
         return $type === 'steam';
     }
 
+    /**
+     * Steam API expects only an ID
+     */
     public function lookup(array $params): array
     {
         if (empty($params['id'])) {
