@@ -4,6 +4,9 @@ namespace App\Services;
 
 class LookupService
 {
+    /**
+     * Platforms injected such as Minecraft, Steam, etc.
+     */
     protected array $platform;
 
     public function __construct(array $platform)

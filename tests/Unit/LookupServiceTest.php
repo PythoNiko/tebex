@@ -15,9 +15,8 @@ class LookupServiceTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-
+        
         $this->minecraftLookupServiceMock = Mockery::mock(MinecraftLookupService::class);
-
         $this->lookupService = new LookupService([$this->minecraftLookupServiceMock]);
     }
 
