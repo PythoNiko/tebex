@@ -27,17 +27,17 @@ class XblLookupService implements LookupInterface
         $username = $params['username'] ?? null;
         $id = $params['id'] ?? null;
 
-        if (!$username && !$id) {
+        if (empty($params['username']) && empty($params['id'])) {
             throw new \InvalidArgumentException("XBL lookup requires a username or ID.");
         }
 
-        if ($username) {
+        if (filled($username)) {
             $cacheKey = "xbl_lookup_username_{$username}";
             $url = "https://ident.tebex.io/usernameservices/3/username/{$username}?type=username";
-        } elseif ($id) {
+        } elseif (filled($id)) {
             $cacheKey = "xbl_lookup_id_{$id}";
             $url = "https://ident.tebex.io/usernameservices/3/username/{$id}";
-        }
+        }        
 
         $data = $this->fetchJsonWithCache($cacheKey, $url);
 

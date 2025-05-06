@@ -24,11 +24,11 @@ class SteamLookupService implements LookupInterface
 
     public function lookup(array $params): array
     {
-        $id = $params['id'] ?? null;
-
-        if (!$id) {
-            throw new \InvalidArgumentException("Steam only supports IDs.");
+        if (empty($params['id'])) {
+            throw new \InvalidArgumentException("Steam lookup requires a valid ID.");
         }
+        
+        $id = $params['id'];
 
         $cacheKey = "steam_lookup_id_{$id}";
         $url = "https://ident.tebex.io/usernameservices/4/username/{$id}";

@@ -27,15 +27,15 @@ class MinecraftLookupService implements LookupInterface
         $username = $params['username'] ?? null;
         $id = $params['id'] ?? null;
 
-        if ($username) {
+        if (filled($username)) {
             $cacheKey = "minecraft_lookup_username_{$username}";
             $url = "https://api.mojang.com/users/profiles/minecraft/{$username}";
-        } elseif ($id) {
+        } elseif (filled($id)) {
             $cacheKey = "minecraft_lookup_id_{$id}";
             $url = "https://sessionserver.mojang.com/session/minecraft/profile/{$id}";
         } else {
             throw new \InvalidArgumentException("Username or ID is required for Minecraft lookup.");
-        }
+        }        
 
         $data = $this->fetchJsonWithCache($cacheKey, $url);
 

@@ -16,7 +16,7 @@ class LookupController extends Controller
 
     public function lookup(Request $request)
     {
-        if (filled($request->get('type')) && ($request->filled('username') || $request->filled('id'))) {
+        if ($request->filled('type') && ($request->filled('username') || $request->filled('id'))) {
             $type = $request->get('type');
             $params = $request->only(['username', 'id']);
 
