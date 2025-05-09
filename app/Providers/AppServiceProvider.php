@@ -19,10 +19,12 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton(LookupService::class, function ($app) {
+            $client = $app->make(Client::class);
+        
             return new LookupService([
-                new MinecraftLookupService($app->make(Client::class)),
-                new SteamLookupService($app->make(Client::class)),
-                new XblLookupService($app->make(Client::class)),
+                new MinecraftLookupService($client),
+                new SteamLookupService($client),
+                new XblLookupService($client),
             ]);
         });
     }
